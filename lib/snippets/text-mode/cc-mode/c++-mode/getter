@@ -1,0 +1,4 @@
+# getter
+# --
+const ${1:type}& get_${2:name}() const { return $2; }
+$0

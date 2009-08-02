@@ -1,0 +1,4 @@
+# setter
+# --
+void set_${1:name}(const ${2:type}& $1) { this->$1 = $1; }
+$0

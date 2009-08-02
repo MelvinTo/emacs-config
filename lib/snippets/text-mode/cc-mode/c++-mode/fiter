@@ -1,0 +1,7 @@
+#name : for(...<...>::iterator...) { ... }
+# --
+for(${1:type}::iterator ${2:iter} = ${3:name}.begin();
+    ${2:iter} != ${3:name}.end();
+    ++${2:iter}) {
+    $4
+}

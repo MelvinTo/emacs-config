@@ -1,0 +1,28 @@
+# gtest framework
+# --
+#include <gtest/gtest.h>
+
+#include "ipdcs.h"
+
+using namespace fishbowl::ipdcs;
+
+class Test${1:name} : public testing::Test {
+protected:
+    Test$1() {
+    }
+
+    virtual ~Test$1() {
+    }
+
+    virtual void SetUp() {
+        IPDCS::init();
+    }
+
+    virtual void TearDown() {
+    }
+
+};
+
+TEST_F(Test$1, ${2:case}) {
+    $0
+}
