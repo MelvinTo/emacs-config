@@ -23,6 +23,7 @@
   (add-to-list 'load-path (concat config-dir
                                   path)))
 (add-to-load-path "lib")                ;; by default add lib into load path
+(add-to-load-path "vendor")
 
 ;;;;; Basic navigation and editing tools
 (require 'ido)                          ;; auto complete for find-file, buffer swtich ...
@@ -60,11 +61,11 @@
 
 
 ;;;;; Code editing tools
-(add-to-load-path "lib/yasnippet")      ;; yasnippet, auto complete codes, like TextMate in OSX
+(add-to-load-path "vendor/yasnippet")      ;; yasnippet, auto complete codes, like TextMate in OSX
 (require 'yasnippet) 
 (yas/initialize)
 (yas/load-directory (concat config-dir
-                            "lib/snippets/"))
+                            "vendor/snippets/"))
 
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) ;; recognize .h as c++ file, since I do C++ programming a lot
@@ -96,7 +97,9 @@
 (global-set-key (kbd "<C-f6>") 'flymake-mode)
 
 ;;;;; Cosmetic
-
+(add-to-load-path "vendor/color-theme")
+(require 'color-theme) ;; load color theme
+(color-theme-initialize)
 
 (defvar font-lock-error-face		'font-lock-error-face
   "Face name to use for things that should stand out.")
@@ -155,4 +158,7 @@
  '(mouse ((t (:background "goldenrod"))))
  )
 
+;; (load-file (concat config-dir 
+;;                    "vendor/color-theme/color-theme-twilight.el"))
+;; (color-theme-twilight)
 
