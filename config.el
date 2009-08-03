@@ -59,6 +59,86 @@
 ;; delete selection mode
 (delete-selection-mode t)  ; delete the selection area with a keypress
 
+(require 'anything)
+(setq anything-samewindow t)
+(setq anything-enable-digit-shortcuts t)
+(global-set-key (kbd "M-S-SPC") 'anything)
+
+
+;; remember mode and org mode
+(setq org-directory "~/orgfiles/")
+(setq org-default-notes-file "~/.notes")
+(setq remember-annotation-functions '(org-remember-annotation))
+(setq remember-handler-functions '(org-remember-handler))
+(add-hook 'remember-mode-hook 'org-remember-apply-template)
+(define-key global-map "\C-cr" 'org-remember)
+
+(setq org-remember-templates
+      '(("IPDCS" ?i "* TODO %t %? %^g\n %i\n" "~/gtd/todo.org" "IPDCS")
+        ("PROVISION" ?p "* TODO %t %? %^g\n %i\n" "~/gtd/todo.org" "Provision")
+        ("Misc" ?m "* TODO %t %? %^g\n %i\n" "~/gtd/todo.org" "Misc")
+                        ("Private" ?v "\n* %^{topic} %T \n%i%?\n" "~/gtd/privnotes.org")
+                        ))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key (kbd "<f12>") 'org-agenda)
+(global-set-key (kbd "<f11>") 'my-org-todo)
+
+;; configure agenda files
+(setq org-agenda-files `(,(expand-file-name "~/gtd")))
+
+;; more configs about org
+(eval-after-load "org"
+  '(progn
+     (define-prefix-command 'org-todo-state-map)
+
+     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+
+     (define-key org-todo-state-map "x"
+       #'(lambda nil (interactive) (org-todo "CANCELLED")))
+     (define-key org-todo-state-map "d"
+       #'(lambda nil (interactive) (org-todo "DONE")))
+     (define-key org-todo-state-map "f"
+       #'(lambda nil (interactive) (org-todo "DEFERRED")))
+     (define-key org-todo-state-map "l"
+       #'(lambda nil (interactive) (org-todo "DELEGATED")))
+     (define-key org-todo-state-map "s"
+       #'(lambda nil (interactive) (org-todo "STARTED")))
+     (define-key org-todo-state-map "w"
+       #'(lambda nil (interactive) (org-todo "WAITING")))
+
+     ;; (define-key org-agenda-mode-map "\C-n" 'next-line)
+     ;; (define-key org-agenda-keymap "\C-n" 'next-line)
+     ;; (define-key org-agenda-mode-map "\C-p" 'previous-line)
+     ;; (define-key org-agenda-keymap "\C-p" 'previous-line)
+     ))
+
+(setq org-agenda-custom-commands
+ (quote (("d" todo "DELEGATED" nil)
+         ("c" todo "DONE|DEFERRED|CANCELLED" nil)
+         ("w" todo "WAITING" nil)
+         ("W" agenda "" ((org-agenda-ndays 21)))
+         ("A" agenda ""
+          ((org-agenda-skip-function
+            (lambda nil
+              (org-agenda-skip-entry-if (quote notregexp) "\\=.*\\[#A\\]")))
+           (org-agenda-ndays 1)
+           (org-agenda-overriding-header "Today's Priority #A tasks: ")))
+         ("u" alltodo ""
+          ((org-agenda-skip-function
+            (lambda nil
+              (org-agenda-skip-entry-if (quote scheduled) (quote deadline)
+                                        (quote regexp) "<[^>\n]+>")))
+           (org-agenda-overriding-header "Unscheduled TODO entries: "))))))
+
+;; set target
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 1))))
+
+;; disable priority in org mode
+(setq org-default-priority ?G)
+(setq org-lowest-priority ?G)
+
 
 ;;;;; Code editing tools
 (add-to-load-path "vendor/yasnippet")      ;; yasnippet, auto complete codes, like TextMate in OSX
