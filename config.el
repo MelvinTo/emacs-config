@@ -64,6 +64,8 @@
 (setq anything-enable-digit-shortcuts t)
 (global-set-key (kbd "M-S-SPC") 'anything)
 
+;; global revert buffers
+(global-auto-revert-mode t)
 
 ;; remember mode and org mode
 (setq org-directory "~/orgfiles/")
