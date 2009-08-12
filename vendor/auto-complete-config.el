@@ -16,7 +16,9 @@
 
 (setq-default ac-sources '(ac-source-dabbrev-words))
 
-(setq ac-auto-start nil)
+(setq ac-auto-start 3)
+(global-auto-complete-mode t)
+
 (global-set-key (kbd "M-/") 'ac-start)
 
 (define-key ac-complete-mode-map (kbd "M-x") 'execute-extended-command)
