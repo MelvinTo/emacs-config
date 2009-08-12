@@ -26,7 +26,8 @@
 (define-key ac-complete-mode-map (kbd "C-p") 'ac-previous)
 (define-key ac-complete-mode-map (kbd "C-g") 'ac-stop)
 
-(define-key ac-complete-mode-map "\t" 'ac-complete)
+;; Do not override TAB
+;;(define-key ac-complete-mode-map "\t" 'ac-complete)
 (define-key ac-complete-mode-map "\r" 'ac-complete)
 
 (defun ac-self-insert ()
