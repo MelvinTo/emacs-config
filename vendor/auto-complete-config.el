@@ -27,6 +27,8 @@
 (define-key ac-complete-mode-map (kbd "C-g") 'ac-stop)
 
 ;; Do not override TAB
+(define-key ac-complete-mode-map "\t" nil)
+
 ;;(define-key ac-complete-mode-map "\t" 'ac-complete)
 (define-key ac-complete-mode-map "\r" 'ac-complete)
 
