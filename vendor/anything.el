@@ -1774,6 +1774,14 @@ Cache the candidates if there is not yet a cached value."
       anything-candidate-number-limit
       99999999))
 
+;; define a fuzzy matching, used in anything
+(defun fuzzy-match-regexp (pattern string)
+  "Just add \".*\" between all chars, so that it can match like launchy"
+  (string-match
+   (replace-regexp-in-string "." "\\&.*" pattern)
+   string))
+
+
 (defun anything-compute-matches (source)
   "Compute matches from SOURCE according to its settings."
   (let ((functions (assoc-default 'match source))

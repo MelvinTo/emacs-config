@@ -26,12 +26,36 @@
 (add-to-load-path "vendor")
 
 ;;;;; Basic navigation and editing tools
+
+(require 'saveplace)
+(setq save-place-file "~/.emacs.d/.saveplace") ;; save locations
+(setq-default save-place t)
+
+
+(setq savehist-file "~/.emacs.d/.savehist") ;; save minibuffer history
+(savehist-mode 1)
+
+(setq x-select-enable-clipboard t)      ;; sync x selection with X clipboard
+
 (require 'ido)                          ;; auto complete for find-file, buffer swtich ...
 (ido-mode t)
 
+;; Let backup files out of my way
 ;; comment out these two if you want it to be safer
 (setq backup-inhibited t)               ;disable backup
 (setq auto-save-default nil)            ;disable auto save
+(defvar user-temporary-file-directory
+  (concat temporary-file-directory user-login-name "/"))
+(make-directory user-temporary-file-directory t)
+(setq backup-by-copying t)
+(setq backup-directory-alist
+      `(("." . ,user-temporary-file-directory)
+        (,tramp-file-name-regexp nil)))
+(setq auto-save-list-file-prefix
+      (concat user-temporary-file-directory ".auto-saves-"))
+(setq auto-save-file-name-transforms
+      `((".*" ,user-temporary-file-directory t)))
+
 
 (put 'dired-find-alternate-file 'disabled nil) ;; enable hotkey 'a' in dired
 
@@ -68,6 +92,8 @@
 (global-auto-revert-mode t)
 
 ;; remember mode and org mode
+(require 'org-install)
+
 (setq org-directory "~/orgfiles/")
 (setq org-default-notes-file "~/.notes")
 (setq remember-annotation-functions '(org-remember-annotation))
@@ -89,6 +115,13 @@
 
 ;; configure agenda files
 (setq org-agenda-files `(,(expand-file-name "~/gtd")))
+
+;; configure ditaa jar file location
+(setq org-ditaa-jar-path (concat
+                          config-dir
+                          "vendor/ditaa0_6b.jar"))
+
+(setq org-use-fast-todo-selection t)
 
 ;; more configs about org
 (eval-after-load "org"
@@ -140,6 +173,16 @@
 ;; disable priority in org mode
 (setq org-default-priority ?G)
 (setq org-lowest-priority ?G)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            ;; yasnippet
+            (make-variable-buffer-local 'yas/trigger-key)
+            (setq yas/trigger-key [tab])
+            (define-key yas/keymap [tab] 'yas/next-field-group)
+            ;; flyspell mode to spell check everywhere
+            (flyspell-mode 1)))
+
 
 
 ;;;;; Code editing tools
