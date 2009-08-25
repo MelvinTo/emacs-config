@@ -40,6 +40,7 @@
 (require 'ido)                          ;; auto complete for find-file, buffer swtich ...
 (ido-mode t)
 
+
 ;; Let backup files out of my way
 ;; comment out these two if you want it to be safer
 (setq backup-inhibited t)               ;disable backup
@@ -184,6 +185,9 @@
             (flyspell-mode 1)))
 
 
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
 
 ;;;;; Code editing tools
 (add-to-load-path "vendor/yasnippet")      ;; yasnippet, auto complete codes, like TextMate in OSX
@@ -192,6 +196,8 @@
 (yas/load-directory (concat config-dir
                             "vendor/snippets/"))
 
+;; Flyspell
+(add-hook 'c-mode-common-hook 'flyspell-prog-mode)
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) ;; recognize .h as c++ file, since I do C++ programming a lot
 (add-hook 'c-mode-common-hook              
